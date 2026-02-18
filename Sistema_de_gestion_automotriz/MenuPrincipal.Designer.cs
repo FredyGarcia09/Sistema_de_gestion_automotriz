@@ -28,18 +28,57 @@
         /// </summary>
         private void InitializeComponent()
         {
+            btnServicios = new Button();
+            btnRefacciones = new Button();
+            label1 = new Label();
             SuspendLayout();
+            // 
+            // btnServicios
+            // 
+            btnServicios.Location = new Point(366, 238);
+            btnServicios.Name = "btnServicios";
+            btnServicios.Size = new Size(190, 38);
+            btnServicios.TabIndex = 0;
+            btnServicios.Text = "Servicios";
+            btnServicios.UseVisualStyleBackColor = true;
+            // 
+            // btnRefacciones
+            // 
+            btnRefacciones.Location = new Point(366, 309);
+            btnRefacciones.Name = "btnRefacciones";
+            btnRefacciones.Size = new Size(190, 38);
+            btnRefacciones.TabIndex = 1;
+            btnRefacciones.Text = "Refacciones";
+            btnRefacciones.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(381, 148);
+            label1.Name = "label1";
+            label1.Size = new Size(161, 20);
+            label1.TabIndex = 2;
+            label1.Text = "Selecciona una función";
             // 
             // MenuPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(977, 622);
+            Controls.Add(label1);
+            Controls.Add(btnRefacciones);
+            Controls.Add(btnServicios);
             Name = "MenuPrincipal";
             Text = "Menu";
+            Load += MenuPrincipal_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Button btnServicios;
+        private Button btnRefacciones;
+        private Label label1;
     }
 }
