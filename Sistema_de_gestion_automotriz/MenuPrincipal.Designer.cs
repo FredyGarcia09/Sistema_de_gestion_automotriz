@@ -50,6 +50,7 @@
             btnRefacciones.TabIndex = 1;
             btnRefacciones.Text = "Refacciones";
             btnRefacciones.UseVisualStyleBackColor = true;
+            btnRefacciones.Click += btnRefacciones_Click;
             // 
             // label1
             // 
