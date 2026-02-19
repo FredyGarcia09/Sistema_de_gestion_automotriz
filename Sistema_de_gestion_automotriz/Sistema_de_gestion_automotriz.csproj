@@ -23,4 +23,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BACKEND\MODELS\" />
+    <Folder Include="BACKEND\DAOs\" />
+  </ItemGroup>
+
 </Project>

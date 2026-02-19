@@ -63,6 +63,46 @@ namespace Sistema_de_gestion_automotriz.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _3709746_customer_evaluation_review_satisfaction_system_108070 {
+            get {
+                object obj = ResourceManager.GetObject("3709746-customer-evaluation-review-satisfaction-system_108070", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _3709746_customer_evaluation_review_satisfaction_system_108070__1_ {
+            get {
+                object obj = ResourceManager.GetObject("3709746-customer-evaluation-review-satisfaction-system_108070 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ajustes__1_ {
+            get {
+                object obj = ResourceManager.GetObject("ajustes (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap brazo_robotico {
+            get {
+                object obj = ResourceManager.GetObject("brazo-robotico", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap exclamation_sign_icon_icons_com_73579 {
             get {
                 object obj = ResourceManager.GetObject("exclamation-sign_icon-icons.com_73579", resourceCulture);

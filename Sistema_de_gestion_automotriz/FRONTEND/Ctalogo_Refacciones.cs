@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.DataFormats;
 
 namespace Sistema_de_gestion_automotriz
 {
@@ -63,6 +64,30 @@ namespace Sistema_de_gestion_automotriz
         {
             txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre."; // Restaura la sugerencia
             txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
+        }
+
+        private void btnMinimizar_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void btnExtender_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            this.Hide(); 
+            MenuPrincipal f2 = new MenuPrincipal();
+            f2.Show();
         }
     }
 }

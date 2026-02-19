@@ -48,7 +48,6 @@
             panel1 = new Panel();
             label9 = new Label();
             btnCerrar = new Button();
-            btnExtender = new Button();
             btnMinimizar = new Button();
             grbStock = new Panel();
             panel2 = new Panel();
@@ -68,6 +67,7 @@
             btnCancelar.TabIndex = 0;
             btnCancelar.Text = "❎Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // label1
             // 
@@ -120,10 +120,12 @@
             txtCodigoRefaccion.ForeColor = Color.Gainsboro;
             txtCodigoRefaccion.Location = new Point(43, 170);
             txtCodigoRefaccion.Name = "txtCodigoRefaccion";
+            txtCodigoRefaccion.PlaceholderText = "SKU - 000";
             txtCodigoRefaccion.Size = new Size(362, 34);
             txtCodigoRefaccion.TabIndex = 5;
             txtCodigoRefaccion.Text = "SKU - 000";
             txtCodigoRefaccion.Enter += txtFuncionalidad_Enter;
+            txtCodigoRefaccion.KeyPress += txtCodigoRefaccion_KeyPress;
             txtCodigoRefaccion.Leave += txtFuncionalidad_Leave;
             // 
             // txtMarca
@@ -132,10 +134,12 @@
             txtMarca.ForeColor = Color.Gainsboro;
             txtMarca.Location = new Point(448, 170);
             txtMarca.Name = "txtMarca";
+            txtMarca.PlaceholderText = "Ej. Bosch, Mazda..";
             txtMarca.Size = new Size(359, 34);
             txtMarca.TabIndex = 6;
             txtMarca.Text = "Ej. Bosch, Mazda..";
             txtMarca.Enter += txtMarca_Enter;
+            txtMarca.KeyPress += txtMarca_KeyPress;
             txtMarca.Leave += txtMarca_Leave;
             // 
             // txtNombreRefaccion
@@ -144,9 +148,13 @@
             txtNombreRefaccion.ForeColor = Color.Gainsboro;
             txtNombreRefaccion.Location = new Point(43, 253);
             txtNombreRefaccion.Name = "txtNombreRefaccion";
+            txtNombreRefaccion.PlaceholderText = "Ej. Filtro de Aceite de Alto Rendimiento";
             txtNombreRefaccion.Size = new Size(764, 34);
             txtNombreRefaccion.TabIndex = 7;
             txtNombreRefaccion.Text = "Ej. Filtro de Aceite de Alto Rendimiento";
+            txtNombreRefaccion.Enter += txtNombreRefaccion_Enter;
+            txtNombreRefaccion.KeyPress += txtNombreRefaccion_KeyPress;
+            txtNombreRefaccion.Leave += txtNombreRefaccion_Leave;
             // 
             // txtPrecioUnitario
             // 
@@ -154,9 +162,13 @@
             txtPrecioUnitario.ForeColor = Color.Gainsboro;
             txtPrecioUnitario.Location = new Point(43, 339);
             txtPrecioUnitario.Name = "txtPrecioUnitario";
+            txtPrecioUnitario.PlaceholderText = "$ 0.00";
             txtPrecioUnitario.Size = new Size(362, 34);
             txtPrecioUnitario.TabIndex = 8;
             txtPrecioUnitario.Text = "$ 0.00";
+            txtPrecioUnitario.Enter += txtPrecioUnitario_Enter;
+            txtPrecioUnitario.KeyPress += txtPrecioUnitario_KeyPress;
+            txtPrecioUnitario.Leave += txtPrecioUnitario_Leave;
             // 
             // label5
             // 
@@ -177,6 +189,7 @@
             txtStockMinimo.Name = "txtStockMinimo";
             txtStockMinimo.Size = new Size(359, 34);
             txtStockMinimo.TabIndex = 14;
+            txtStockMinimo.KeyPress += txtStockMinimo_KeyPress;
             // 
             // txtAtockActual
             // 
@@ -186,6 +199,7 @@
             txtAtockActual.Name = "txtAtockActual";
             txtAtockActual.Size = new Size(362, 34);
             txtAtockActual.TabIndex = 12;
+            txtAtockActual.KeyPress += txtAtockActual_KeyPress;
             // 
             // label7
             // 
@@ -218,6 +232,7 @@
             btnGuardar.TabIndex = 12;
             btnGuardar.Text = "📩Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // label8
             // 
@@ -236,7 +251,6 @@
             panel1.BackColor = Color.DarkGreen;
             panel1.Controls.Add(label9);
             panel1.Controls.Add(btnCerrar);
-            panel1.Controls.Add(btnExtender);
             panel1.Controls.Add(btnMinimizar);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
@@ -269,21 +283,7 @@
             btnCerrar.TabIndex = 2;
             btnCerrar.Text = "×";
             btnCerrar.UseVisualStyleBackColor = false;
-            // 
-            // btnExtender
-            // 
-            btnExtender.BackColor = Color.Transparent;
-            btnExtender.FlatAppearance.BorderSize = 0;
-            btnExtender.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
-            btnExtender.FlatStyle = FlatStyle.Flat;
-            btnExtender.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExtender.ForeColor = SystemColors.ButtonFace;
-            btnExtender.Location = new Point(738, 12);
-            btnExtender.Name = "btnExtender";
-            btnExtender.Size = new Size(44, 39);
-            btnExtender.TabIndex = 1;
-            btnExtender.Text = "▭";
-            btnExtender.UseVisualStyleBackColor = false;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // btnMinimizar
             // 
@@ -293,12 +293,13 @@
             btnMinimizar.FlatStyle = FlatStyle.Flat;
             btnMinimizar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnMinimizar.ForeColor = SystemColors.ButtonFace;
-            btnMinimizar.Location = new Point(687, 12);
+            btnMinimizar.Location = new Point(737, 12);
             btnMinimizar.Name = "btnMinimizar";
             btnMinimizar.Size = new Size(45, 39);
             btnMinimizar.TabIndex = 0;
             btnMinimizar.Text = "-";
             btnMinimizar.UseVisualStyleBackColor = false;
+            btnMinimizar.Click += btnMinimizar_Click;
             // 
             // grbStock
             // 
@@ -335,6 +336,7 @@
             // 
             // cboProveedor
             // 
+            cboProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
             cboProveedor.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cboProveedor.FormattingEnabled = true;
             cboProveedor.Location = new Point(448, 339);
@@ -398,11 +400,10 @@
         private Panel panel1;
         private Label label9;
         private Button btnCerrar;
-        private Button btnExtender;
-        private Button btnMinimizar;
         private Panel grbStock;
         private Panel panel2;
         private ComboBox cboProveedor;
         private PictureBox pictureBox1;
+        private Button btnMinimizar;
     }
 }

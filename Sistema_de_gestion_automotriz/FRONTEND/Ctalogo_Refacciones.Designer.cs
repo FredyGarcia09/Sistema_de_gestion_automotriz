@@ -38,7 +38,10 @@
             button4 = new Button();
             dataGridView1 = new DataGridView();
             panel2 = new Panel();
+            btnCerrar = new Button();
             label4 = new Label();
+            btnExtender = new Button();
+            btnMinimizar = new Button();
             btnVer = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel2.SuspendLayout();
@@ -90,7 +93,7 @@
             // btnRecargar
             // 
             btnRecargar.FlatAppearance.BorderSize = 0;
-            btnRecargar.FlatAppearance.MouseOverBackColor = Color.LightGreen;
+            btnRecargar.FlatAppearance.MouseOverBackColor = Color.Gainsboro;
             btnRecargar.FlatStyle = FlatStyle.Flat;
             btnRecargar.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnRecargar.Location = new Point(886, 142);
@@ -149,12 +152,31 @@
             // panel2
             // 
             panel2.BackColor = Color.DarkGreen;
+            panel2.Controls.Add(btnCerrar);
             panel2.Controls.Add(label4);
+            panel2.Controls.Add(btnExtender);
+            panel2.Controls.Add(btnMinimizar);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(973, 54);
             panel2.TabIndex = 10;
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.BackColor = Color.Transparent;
+            btnCerrar.FlatAppearance.BorderSize = 0;
+            btnCerrar.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            btnCerrar.FlatStyle = FlatStyle.Flat;
+            btnCerrar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCerrar.ForeColor = SystemColors.ButtonFace;
+            btnCerrar.Location = new Point(908, 4);
+            btnCerrar.Name = "btnCerrar";
+            btnCerrar.Size = new Size(45, 39);
+            btnCerrar.TabIndex = 14;
+            btnCerrar.Text = "×";
+            btnCerrar.UseVisualStyleBackColor = false;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // label4
             // 
@@ -166,6 +188,38 @@
             label4.Size = new Size(137, 17);
             label4.TabIndex = 0;
             label4.Text = "🔧TALLER MECANICO";
+            // 
+            // btnExtender
+            // 
+            btnExtender.BackColor = Color.Transparent;
+            btnExtender.FlatAppearance.BorderSize = 0;
+            btnExtender.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            btnExtender.FlatStyle = FlatStyle.Flat;
+            btnExtender.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExtender.ForeColor = SystemColors.ButtonFace;
+            btnExtender.Location = new Point(858, 4);
+            btnExtender.Name = "btnExtender";
+            btnExtender.Size = new Size(44, 39);
+            btnExtender.TabIndex = 13;
+            btnExtender.Text = "▭";
+            btnExtender.UseVisualStyleBackColor = false;
+            btnExtender.Click += btnExtender_Click;
+            // 
+            // btnMinimizar
+            // 
+            btnMinimizar.BackColor = Color.Transparent;
+            btnMinimizar.FlatAppearance.BorderSize = 0;
+            btnMinimizar.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            btnMinimizar.FlatStyle = FlatStyle.Flat;
+            btnMinimizar.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnMinimizar.ForeColor = SystemColors.ButtonFace;
+            btnMinimizar.Location = new Point(807, 4);
+            btnMinimizar.Name = "btnMinimizar";
+            btnMinimizar.Size = new Size(45, 39);
+            btnMinimizar.TabIndex = 12;
+            btnMinimizar.Text = "-";
+            btnMinimizar.UseVisualStyleBackColor = false;
+            btnMinimizar.Click += btnMinimizar_Click;
             // 
             // btnVer
             // 
@@ -218,5 +272,8 @@
         private Panel panel2;
         private Label label4;
         private Button btnVer;
+        private Button btnCerrar;
+        private Button btnExtender;
+        private Button btnMinimizar;
     }
 }
