@@ -25,7 +25,11 @@
 
   <ItemGroup>
     <Folder Include="BACKEND\MODELS\" />
-    <Folder Include="BACKEND\DAOs\" />
+    <Folder Include="BACKEND\CONEXION\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="9.6.0" />
   </ItemGroup>
 
 </Project>

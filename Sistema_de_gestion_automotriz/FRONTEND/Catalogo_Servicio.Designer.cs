@@ -191,6 +191,7 @@
             btnRecargar.TabIndex = 16;
             btnRecargar.Text = "🔃";
             btnRecargar.UseVisualStyleBackColor = true;
+            btnRecargar.Click += btnRecargar_Click;
             // 
             // txtBuscar_Clave_Nombre
             // 

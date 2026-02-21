@@ -34,16 +34,16 @@
             txtBuscar_Clave_Nombre = new TextBox();
             btnRecargar = new Button();
             btnAgregar = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            dataGridView1 = new DataGridView();
+            btnEliminar = new Button();
+            dgvRefacciones = new DataGridView();
             panel2 = new Panel();
             btnCerrar = new Button();
             label4 = new Label();
             btnExtender = new Button();
             btnMinimizar = new Button();
             btnVer = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            btnModifica = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvRefacciones).BeginInit();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -102,6 +102,7 @@
             btnRecargar.TabIndex = 4;
             btnRecargar.Text = "🔃";
             btnRecargar.UseVisualStyleBackColor = true;
+            btnRecargar.Click += btnRecargar_Click;
             // 
             // btnAgregar
             // 
@@ -117,37 +118,26 @@
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // button3
+            // btnEliminar
             // 
-            button3.FlatAppearance.MouseOverBackColor = Color.DarkSeaGreen;
-            button3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button3.Location = new Point(231, 202);
-            button3.Name = "button3";
-            button3.Size = new Size(122, 39);
-            button3.TabIndex = 6;
-            button3.Text = "✏️ Modificar";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            btnEliminar.FlatAppearance.MouseOverBackColor = Color.DarkSeaGreen;
+            btnEliminar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnEliminar.Location = new Point(359, 202);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(117, 39);
+            btnEliminar.TabIndex = 7;
+            btnEliminar.Text = "🗑️ Eliminar";
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += button4_Click;
             // 
-            // button4
+            // dgvRefacciones
             // 
-            button4.FlatAppearance.MouseOverBackColor = Color.DarkSeaGreen;
-            button4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button4.Location = new Point(359, 202);
-            button4.Name = "button4";
-            button4.Size = new Size(117, 39);
-            button4.TabIndex = 7;
-            button4.Text = "🗑️ Eliminar";
-            button4.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(35, 293);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(897, 426);
-            dataGridView1.TabIndex = 8;
+            dgvRefacciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvRefacciones.Location = new Point(35, 293);
+            dgvRefacciones.Name = "dgvRefacciones";
+            dgvRefacciones.RowHeadersWidth = 51;
+            dgvRefacciones.Size = new Size(897, 426);
+            dgvRefacciones.TabIndex = 8;
             // 
             // panel2
             // 
@@ -231,17 +221,30 @@
             btnVer.TabIndex = 11;
             btnVer.Text = "👁️ Ver";
             btnVer.UseVisualStyleBackColor = true;
+            btnVer.Click += btnVer_Click;
+            // 
+            // btnModifica
+            // 
+            btnModifica.FlatAppearance.MouseOverBackColor = Color.DarkSeaGreen;
+            btnModifica.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnModifica.Location = new Point(236, 202);
+            btnModifica.Name = "btnModifica";
+            btnModifica.Size = new Size(117, 39);
+            btnModifica.TabIndex = 12;
+            btnModifica.Text = "✏️Modificar";
+            btnModifica.UseVisualStyleBackColor = true;
+            btnModifica.Click += btnModifica_Click;
             // 
             // Catalogo_Refacciones
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(973, 764);
+            Controls.Add(btnModifica);
             Controls.Add(btnVer);
             Controls.Add(panel2);
-            Controls.Add(dataGridView1);
-            Controls.Add(button4);
-            Controls.Add(button3);
+            Controls.Add(dgvRefacciones);
+            Controls.Add(btnEliminar);
             Controls.Add(btnAgregar);
             Controls.Add(btnRecargar);
             Controls.Add(txtBuscar_Clave_Nombre);
@@ -251,7 +254,8 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "Catalogo_Refacciones";
             Text = "Catalogo_Refacciones";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Load += Catalogo_Refacciones_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvRefacciones).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
@@ -266,14 +270,15 @@
         private TextBox txtBuscar_Clave_Nombre;
         private Button btnRecargar;
         private Button btnAgregar;
-        private Button button3;
-        private Button button4;
-        private DataGridView dataGridView1;
+        private Button btnModificar;
+        private Button btnEliminar;
+        private DataGridView dgvRefacciones;
         private Panel panel2;
         private Label label4;
         private Button btnVer;
         private Button btnCerrar;
         private Button btnExtender;
         private Button btnMinimizar;
+        private Button btnModifica;
     }
 }

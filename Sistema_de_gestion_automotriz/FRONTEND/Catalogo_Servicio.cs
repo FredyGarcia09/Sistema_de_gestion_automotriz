@@ -92,6 +92,18 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnVer_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            Detalles_Servicio f2 = new Detalles_Servicio();
+            f2.Show();
+        }
+
+        private void btnRecargar_Click(object sender, EventArgs e)
+        {
+            if (txtBuscar_Clave_Nombre.Text != null)
+            {
+                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre.";
+                txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
+            }
         }
     }
 }

@@ -175,38 +175,69 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // 1. Creamos una lista de los campos que queremos validar longitud (tipo varchar/text)
-            TextBox[] camposTexto = { txtCodigoRefaccion, txtMarca, txtNombreRefaccion };
-
-            foreach (TextBox txt in camposTexto)
+            if (cboProveedor.SelectedIndex == -1)
             {
-                // Primero revisamos si el usuario escribió algo real (que no sea el placeholder)
-                // Usamos el color Gainsboro que tú definiste para saber si es el ejemplo
-                if (txt.ForeColor == Color.Gainsboro || string.IsNullOrWhiteSpace(txt.Text))
-                {
-                    MessageBox.Show("El campo " + txt.Name.Replace("txt", "") + " es obligatorio.", "Atención");
-                    txt.Focus();
-                    return; // Detiene el proceso
-                }
-
-                // Ahora validamos los 50 caracteres
-                if (txt.Text.Length > 50)
-                {
-                    MessageBox.Show("El campo " + txt.Name.Replace("txt", "") + " solo permite hasta 50 caracteres.", "Límite excedido");
-                    txt.Focus();
-                    return; // Detiene el proceso
-                }
-            }
-
-            // 2. Validaciones extras para números (Precio y Stock)
-            if (txtPrecioUnitario.ForeColor == Color.Gainsboro || txtAtockActual.ForeColor == Color.Gainsboro)
-            {
-                MessageBox.Show("Por favor ingresa valores numéricos en Precio y Stock.");
+                MessageBox.Show("Por favor, selecciona un proveedor de la lista.");
                 return;
             }
 
-            // Si llegó hasta aquí, ¡todo está perfecto!
-            MessageBox.Show("¡Refacción guardada con éxito!", "Sistema de Gestión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                // Creamos el objeto del DAO para procesar los datos 
+                BACKEND.DAOs.RefaccionesDAO dao = new BACKEND.DAOs.RefaccionesDAO();
+
+                // Le mandamos todos los datos, incluyendo el .Text del ComboBox
+                dao.GuardarRefaccion(
+                    txtCodigoRefaccion.Text,
+                    txtMarca.Text,
+                    txtNombreRefaccion.Text,
+                    cboProveedor.Text, // <--- Aquí es donde metes el proveedor
+                    Convert.ToDouble(txtPrecioUnitario.Text),
+                    Convert.ToInt32(txtAtockActual.Text), // Usando tu variable 'Atock'
+                    Convert.ToInt32(txtStockMinimo.Text)
+                );
+
+                MessageBox.Show("Datos guardados. Volviendo al catálogo...");
+                this.btnCerrar_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: Verifica que los campos numéricos sean correctos.");
+            }
+        }
+
+        // Método para recibir datos y decidir si se puede editar o no 
+        public void LlenarCampos(string codigo, string nombre, string marca, string precio, string stockA, string stockM, string prov, bool esEditable)
+        {
+            // Llenamos los textos
+            txtCodigoRefaccion.Text = codigo;
+            txtNombreRefaccion.Text = nombre;
+            txtMarca.Text = marca;
+            txtPrecioUnitario.Text = precio;
+            txtAtockActual.Text = stockA;
+            txtStockMinimo.Text = stockM;
+            cboProveedor.Text = prov;
+
+            // Ajustamos colores para que no parezcan placeholders
+            foreach (Control c in this.Controls)
+            {
+                if (c is TextBox) { c.ForeColor = Color.Black; }
+            }
+
+            // BLOQUEAR O DESBLOQUEAR 
+                        // Usamos ReadOnly para que el usuario pueda copiar el texto pero no borrarlo
+            txtCodigoRefaccion.ReadOnly = !esEditable;
+            txtNombreRefaccion.ReadOnly = !esEditable;
+            txtMarca.ReadOnly = !esEditable;
+            txtPrecioUnitario.ReadOnly = !esEditable;
+            txtAtockActual.ReadOnly = !esEditable;
+            txtStockMinimo.ReadOnly = !esEditable;
+
+            // El ComboBox se bloquea con Enabled
+            cboProveedor.Enabled = esEditable;
+
+            // Si es modo "Ver", ocultamos el botón de Guardar para que no intenten picarle
+            btnGuardar.Visible = esEditable;
         }
     }
 }
