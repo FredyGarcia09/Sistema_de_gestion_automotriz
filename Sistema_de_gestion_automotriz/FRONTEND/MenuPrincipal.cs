@@ -22,7 +22,7 @@ namespace Sistema_de_gestion_automotriz
             hilo.Start();
 
             // 3. Cerramos el formulario actual definitivamente
-            this.Close();
+            //this.Close();
         }
         private void AbrirNuevoFormulario()
         {
