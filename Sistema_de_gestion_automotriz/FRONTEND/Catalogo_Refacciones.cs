@@ -86,9 +86,10 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            MenuPrincipal f2 = new MenuPrincipal();
-            f2.Show();
+            // Buscamos el menú principal que estaba oculto y lo volvemos a mostrar
+            Application.OpenForms["MenuPrincipal"].Show();
+            // Cerramos esta ventana de refacciones
+            this.Close();
         }
 
         private void btnVer_Click(object sender, EventArgs e)

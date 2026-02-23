@@ -14,15 +14,12 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnRefacciones_Click(object sender, EventArgs e)
         {
-            // 1. Creamos un hilo para abrir el nuevo formulario
-            System.Threading.Thread hilo = new System.Threading.Thread(new System.Threading.ThreadStart(AbrirNuevoFormulario));
-
-            // 2. Iniciamos el hilo
-            hilo.SetApartmentState(System.Threading.ApartmentState.STA);
-            hilo.Start();
-
-            // 3. Cerramos el formulario actual definitivamente
-            //this.Close();
+            // Creamos la nueva ventana
+            Catalogo_Refacciones ventanaRefacciones = new Catalogo_Refacciones();
+            // La mostramos
+            ventanaRefacciones.Show();
+            // Ocultamos el menú principal (no lo cerramos, para no matar la app)
+            this.Hide();
         }
         private void AbrirNuevoFormulario()
         {

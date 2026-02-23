@@ -10,7 +10,7 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
     internal class RefaccionesDAO
     {
         // Instancia de nuestra clase de conexión
-        Cconexion conexionDB = new Cconexion();
+        Conexion conexionDB = new Conexion();
 
         // Método para INSERTAR 
         public void GuardarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
@@ -47,7 +47,7 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
         {
             try
             {
-                Cconexion conexionDB = new Cconexion();
+                Conexion conexionDB = new Conexion();
                 // Sentencia SQL para borrar el registro específico 
                 string query = "DELETE FROM refacciones WHERE codigoRefaccion = @cod";
 
@@ -67,7 +67,7 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
         // Método para OBTENER los datos de la nube y llenar un DataTable
         public void MostrarRefacciones(DataGridView tabla)
         {
-            Cconexion objetoConexion = new Cconexion();
+            Conexion objetoConexion = new Conexion();
             try
             {
                 // Consulta SQL para traer todo de la tabla refacciones

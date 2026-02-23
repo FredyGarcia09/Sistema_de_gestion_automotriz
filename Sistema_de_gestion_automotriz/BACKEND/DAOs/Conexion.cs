@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
 {
-    internal class Cconexion
+    internal class Conexion
     { 
         private string servidor = "4.227.177.122";
         private string bd = "dbTallerMecanico";
@@ -17,7 +17,7 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
 
         public MySqlConnection establecerConexion()
         {
-            string cadenaConexion = $"server={servidor}; port={puerto}; user id={usuario}; password={password}; database={bd}; SslMode=Required;";
+            string cadenaConexion = $"server={servidor}; port={puerto}; user id={usuario}; password={password}; database={bd}; Connection Timeout=5;";
             MySqlConnection conex = new MySqlConnection(cadenaConexion);
             return conex;
         }
