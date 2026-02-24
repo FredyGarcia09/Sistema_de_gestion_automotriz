@@ -88,6 +88,7 @@
             txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre.";
             txtBuscar_Clave_Nombre.TextChanged += txtBuscar_Clave_Nombre_TextChanged;
             txtBuscar_Clave_Nombre.Enter += txtBuscar_Clave_Nombre_Enter;
+            txtBuscar_Clave_Nombre.KeyPress += txtBuscar_Clave_Nombre_KeyPress;
             txtBuscar_Clave_Nombre.Leave += txtBuscar_Clave_Nombre_Leave;
             // 
             // btnRecargar

@@ -86,10 +86,37 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtBuscar_Clave_Nombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite solo letras, espacios y teclas de control (como borrar)
-            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            // 1. Convertir automáticamente a MAYÚSCULAS al teclear
+            e.KeyChar = char.ToUpper(e.KeyChar);
+
+            // 2. Permitir letras o números
+            if (char.IsLetterOrDigit(e.KeyChar))
             {
-                e.Handled = true; // "Bloquea" la tecla
+                e.Handled = false; 
+            }
+            // 3. Permitir teclas de control (Borrar, flechas, etc.)
+            else if (char.IsControl(e.KeyChar))
+            {
+                e.Handled = false; 
+            }
+            // 4. Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
+            else if (e.KeyChar == '-')
+            {
+                TextBox txt = (TextBox)sender; 
+
+                if (txt.Text.Contains("-"))
+                {
+                    e.Handled = true; 
+                }
+                else
+                {
+                    e.Handled = false; 
+                }
+            }
+            // 5. Bloquear todo lo demás (espacios, puntos, comas, etc.)
+            else
+            {
+                e.Handled = true; 
             }
         }
 

@@ -32,17 +32,16 @@ namespace Sistema_de_gestion_automotriz
             esSoloLectura = !esEditable;
             esModificacion = !esNuevo;
 
-            // Bloqueos de UI
-            txtClaveServicio.ReadOnly = !esEditable;
-            txtNombreServicio.ReadOnly = !esEditable;
-            txtDescripcion.ReadOnly = !esEditable;
-            txtCostoBase.ReadOnly = !esEditable;
-            txtTiempoEstimado.ReadOnly = !esEditable;
+            // BLOQUEOS REALES 
+            txtClaveServicio.Enabled = esEditable;
+            txtNombreServicio.Enabled = esEditable;
+            txtDescripcion.Enabled = esEditable;
+            txtCostoBase.Enabled = esEditable;
+            txtTiempoEstimado.Enabled = esEditable;
 
             btnGuardar.Visible = esEditable;
             btnCancelar.Visible = esEditable;
 
-            // Gestión visual del modo
             if (!esEditable)
             {
                 lblModo.Text = "MODO: Sólo Lectura";
@@ -57,12 +56,26 @@ namespace Sistema_de_gestion_automotriz
             {
                 lblModo.Text = "MODO: Edición";
                 lblModo.ForeColor = Color.Orange;
-                txtClaveServicio.ReadOnly = true;
+                txtClaveServicio.Enabled = false;
             }
 
-            foreach (Control c in this.Controls)
+            
+            // Buscamos todos los TextBox del formulario, sin importar si están en un GroupBox
+            var todosLosTextBox = this.Controls.Cast<Control>()
+                                  .SelectMany(c => GetAllControls(c))
+                                  .OfType<TextBox>();
+
+            foreach (TextBox txt in todosLosTextBox)
             {
-                if (c is TextBox && c.Text != "") { c.ForeColor = Color.Black; }
+                // Si el campo tiene texto y NO es el texto de ejemplo, lo ponemos negro
+                if (!string.IsNullOrWhiteSpace(txt.Text) &&
+                    txt.Text != "Ex: SERV-001" &&
+                    txt.Text != "SKU-00000" &&
+                    txt.Text != " $ 0.00" &&
+                    txt.ForeColor == Color.Gainsboro)
+                {
+                    txt.ForeColor = Color.Black;
+                }
             }
         }
 
@@ -75,8 +88,9 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtClaveServicio_Enter(object sender, EventArgs e)
         {
-            if (txtClaveServicio.ForeColor != Color.Black) { 
-                txtClaveServicio.Text = ""; txtClaveServicio.ForeColor = Color.Black; 
+            if (txtClaveServicio.ForeColor == Color.Gainsboro)
+            {
+                txtClaveServicio.Text = ""; txtClaveServicio.ForeColor = Color.Black;
             }
         }
 
@@ -90,7 +104,10 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtNombreServicio_Enter(object sender, EventArgs e)
         {
-            if (txtNombreServicio.ForeColor != Color.Black) { txtNombreServicio.Text = ""; txtNombreServicio.ForeColor = Color.Black; }
+            if (txtNombreServicio.ForeColor == Color.Gainsboro)
+            {
+                txtNombreServicio.Text = ""; txtNombreServicio.ForeColor = Color.Black;
+            }
         }
 
         private void txtDescripcion_Leave(object sender, EventArgs e)
@@ -106,9 +123,9 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtDescripcion_Enter(object sender, EventArgs e)
         {
-            if (txtDescripcion.ForeColor != Color.Black) { 
-                txtDescripcion.Text = ""; 
-                txtDescripcion.ForeColor = Color.Black; 
+            if (txtDescripcion.ForeColor == Color.Gainsboro)
+            {
+                txtDescripcion.Text = ""; txtDescripcion.ForeColor = Color.Black;
             }
         }
 
@@ -122,9 +139,9 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtCostoBase_Enter(object sender, EventArgs e)
         {
-            if (txtCostoBase.ForeColor != Color.Black) { 
-                txtCostoBase.Text = ""; 
-                txtCostoBase.ForeColor = Color.Black; 
+            if (txtCostoBase.ForeColor == Color.Gainsboro)
+            {
+                txtCostoBase.Text = ""; txtCostoBase.ForeColor = Color.Black;
             }
         }
 
@@ -139,17 +156,27 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtTiempoEstimado_Enter(object sender, EventArgs e)
         {
-            if (txtTiempoEstimado.ForeColor != Color.Black) { 
-                txtTiempoEstimado.Text = ""; 
-                txtTiempoEstimado.ForeColor = Color.Black; 
+            if (txtTiempoEstimado.ForeColor == Color.Gainsboro)
+            {
+                txtTiempoEstimado.Text = ""; txtTiempoEstimado.ForeColor = Color.Black;
             }
         }
 
         private void txtClaveServicio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsLetterOrDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != '-')
+            e.KeyChar = char.ToUpper(e.KeyChar); // Forzar Mayúsculas
+
+            if (char.IsLetterOrDigit(e.KeyChar) || char.IsControl(e.KeyChar))
             {
-                e.Handled = true;
+                e.Handled = false;
+            }
+            else if (e.KeyChar == '-' && !txtClaveServicio.Text.Contains("-"))
+            {
+                e.Handled = false; // Permite el guion solo si no hay uno
+            }
+            else
+            {
+                e.Handled = true; // Bloquea todo lo demás
             }
         }
 
@@ -241,6 +268,12 @@ namespace Sistema_de_gestion_automotriz
                     MessageBox.Show("Revisa los formatos numéricos. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+        // Esta función es la que ayuda a encontrar los TextBox que están escondidos dentro de GroupBoxes
+        public IEnumerable<Control> GetAllControls(Control container)
+        {
+            var controls = container.Controls.Cast<Control>();
+            return controls.SelectMany(ctrl => GetAllControls(ctrl)).Concat(controls);
         }
     }
 }
