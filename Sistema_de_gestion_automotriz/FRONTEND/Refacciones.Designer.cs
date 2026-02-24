@@ -52,7 +52,8 @@
             grbStock = new Panel();
             panel2 = new Panel();
             pictureBox1 = new PictureBox();
-            cboProveedor = new ComboBox();
+            lblModo = new Label();
+            txtProveedor = new TextBox();
             panel1.SuspendLayout();
             grbStock.SuspendLayout();
             panel2.SuspendLayout();
@@ -226,6 +227,7 @@
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.DarkGreen;
+            btnGuardar.ForeColor = SystemColors.ButtonHighlight;
             btnGuardar.Location = new Point(738, 19);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(115, 45);
@@ -334,15 +336,27 @@
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
             // 
-            // cboProveedor
+            // lblModo
             // 
-            cboProveedor.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboProveedor.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            cboProveedor.FormattingEnabled = true;
-            cboProveedor.Location = new Point(448, 339);
-            cboProveedor.Name = "cboProveedor";
-            cboProveedor.Size = new Size(359, 36);
-            cboProveedor.TabIndex = 18;
+            lblModo.AutoSize = true;
+            lblModo.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblModo.ForeColor = Color.DarkGreen;
+            lblModo.Location = new Point(43, 86);
+            lblModo.Name = "lblModo";
+            lblModo.Size = new Size(156, 28);
+            lblModo.TabIndex = 19;
+            lblModo.Text = "MODO: Edición";
+            // 
+            // txtProveedor
+            // 
+            txtProveedor.Font = new Font("Segoe UI", 12F);
+            txtProveedor.ForeColor = Color.Gainsboro;
+            txtProveedor.Location = new Point(448, 339);
+            txtProveedor.Name = "txtProveedor";
+            txtProveedor.PlaceholderText = "Michelin";
+            txtProveedor.Size = new Size(362, 34);
+            txtProveedor.TabIndex = 20;
+            txtProveedor.Text = "Michelin";
             // 
             // Refacciones
             // 
@@ -350,7 +364,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(867, 649);
-            Controls.Add(cboProveedor);
+            Controls.Add(txtProveedor);
+            Controls.Add(lblModo);
             Controls.Add(panel2);
             Controls.Add(grbStock);
             Controls.Add(panel1);
@@ -402,8 +417,9 @@
         private Button btnCerrar;
         private Panel grbStock;
         private Panel panel2;
-        private ComboBox cboProveedor;
         private PictureBox pictureBox1;
         private Button btnMinimizar;
+        private Label lblModo;
+        private TextBox txtProveedor;
     }
 }

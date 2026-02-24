@@ -16,6 +16,30 @@ namespace Sistema_de_gestion_automotriz
         public Catalogo_Refacciones()
         {
             InitializeComponent();
+            ConfigurarGrid();
+        }
+
+        private void ConfigurarGrid()
+        {
+            // Selección de toda la fila
+            dgvRefacciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            // Evita que el usuario edite o agregue filas
+            dgvRefacciones.AllowUserToAddRows = false;
+            dgvRefacciones.ReadOnly = true;
+
+            // Diseño visual 
+            dgvRefacciones.BackgroundColor = Color.White;
+            dgvRefacciones.BorderStyle = BorderStyle.None;
+            dgvRefacciones.EnableHeadersVisualStyles = false;
+
+            // Encabezados
+            dgvRefacciones.ColumnHeadersDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#006400");
+            dgvRefacciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvRefacciones.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            // Filas alternadas
+            dgvRefacciones.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#E8F5E9");
         }
 
         // Esta es la función que el botón de guardar intentaba llamar
@@ -31,15 +55,11 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            // 1. Creamos un hilo para abrir el nuevo formulario
-            System.Threading.Thread hilo = new System.Threading.Thread(new System.Threading.ThreadStart(AbrirNuevoFormulario));
-
-            // 2. Iniciamos el hilo
-            hilo.SetApartmentState(System.Threading.ApartmentState.STA);
-            hilo.Start();
-
-            // 3. Cerramos el formulario actual definitivamente
-            this.Close();
+            Refacciones ventana = new Refacciones();
+            // Parámetros vacíos. esEditable = true, esNuevo = true
+            ventana.LlenarCampos("", "", "", "", "", "", "", true, true);
+            ventana.Show();
+            this.Hide();
         }
         private void AbrirNuevoFormulario()
         {
@@ -49,7 +69,26 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtBuscar_Clave_Nombre_TextChanged(object sender, EventArgs e)
         {
+            // Condicion para buscar
+            if (txtBuscar_Clave_Nombre.Text == "🔍Buscar por Clave o Nombre." || string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text))
+            {
+                // Si la tabla ya tiene datos, le quitamos cualquier filtro para que muestre todo
+                if (dgvRefacciones.DataSource is DataTable dtVacio)
+                {
+                    dtVacio.DefaultView.RowFilter = "";
+                }
+                return;
+            }
 
+            // Aplicar filtro en memoria local
+            if (dgvRefacciones.DataSource is DataTable dt)
+            {
+                // Limpiar el texto ingresado
+                string textoBuscado = txtBuscar_Clave_Nombre.Text.Trim().Replace("'", "''");
+
+                // Filtramos donde la clave O el nombre contengan el texto ingresado
+                dt.DefaultView.RowFilter = $"codigoRefaccion LIKE '%{textoBuscado}%' OR nombre LIKE '%{textoBuscado}%'";
+            }
         }
 
         private void txtBuscar_Clave_Nombre_Enter(object sender, EventArgs e)
@@ -97,16 +136,16 @@ namespace Sistema_de_gestion_automotriz
             if (dgvRefacciones.SelectedRows.Count > 0)
             {
                 Refacciones ventana = new Refacciones();
-                EnviarDatos(ventana, false); // false = NO editable
+                EnviarDatos(ventana, false, false); // esEditable = false, esNuevo = false
                 ventana.Show();
                 this.Hide();
             }
+            else { MessageBox.Show("Selecciona una refacción."); }
         }
 
-        // Método para extraer datos del grid respetando el orden de tu DB 
-        private void EnviarDatos(Refacciones ventana, bool editable)
+        // Método auxiliar para no repetir código de extracción
+        private void EnviarDatos(Refacciones ventana, bool editable, bool nuevo)
         {
-            // Índice según tu tabla: 0:cod, 1:nom, 2:mar, 3:pre, 4:stA, 5:stM, 6:prov
             string cod = dgvRefacciones.CurrentRow.Cells[0].Value.ToString();
             string nom = dgvRefacciones.CurrentRow.Cells[1].Value.ToString();
             string mar = dgvRefacciones.CurrentRow.Cells[2].Value.ToString();
@@ -115,15 +154,22 @@ namespace Sistema_de_gestion_automotriz
             string sM = dgvRefacciones.CurrentRow.Cells[5].Value.ToString();
             string pro = dgvRefacciones.CurrentRow.Cells[6].Value.ToString();
 
-            ventana.LlenarCampos(cod, nom, mar, pre, sA, sM, pro, editable);
+            ventana.LlenarCampos(cod, nom, mar, pre, sA, sM, pro, editable, nuevo);
         }
+
         private void btnRecargar_Click(object sender, EventArgs e)
         {
-            if (txtBuscar_Clave_Nombre.Text != null)
+            txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre.";
+            txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
+
+            // Quitar el filtro de memoria
+            if (dgvRefacciones.DataSource is DataTable dt)
             {
-                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre.";
-                txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
+                dt.DefaultView.RowFilter = "";
             }
+
+            // Volver a descargar los datos de Azure
+            RefrescarTabla();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -164,15 +210,25 @@ namespace Sistema_de_gestion_automotriz
             if (dgvRefacciones.SelectedRows.Count > 0)
             {
                 Refacciones ventana = new Refacciones();
-                EnviarDatos(ventana, true); // true = SÍ editable
+                EnviarDatos(ventana, true, false); // esEditable = true, esNuevo = false
                 ventana.Show();
                 this.Hide();
             }
+            else { MessageBox.Show("Selecciona una refacción."); }
         }
 
         private void Catalogo_Refacciones_Load(object sender, EventArgs e)
         {
             RefrescarTabla();
+        }
+
+        private void dgvRefacciones_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Validar clic a una fila y no a los títulos
+            if (e.RowIndex >= 0)
+            {
+                btnVer_Click(sender, e);
+            }
         }
     }
 }

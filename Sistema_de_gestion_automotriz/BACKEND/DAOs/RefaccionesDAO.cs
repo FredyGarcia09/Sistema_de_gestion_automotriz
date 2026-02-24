@@ -1,9 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+using System.Windows.Forms;
 
 namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
 {
@@ -12,43 +10,68 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
         // Instancia de nuestra clase de conexión
         Conexion conexionDB = new Conexion();
 
-        // Método para INSERTAR 
+        // 1. Método para INSERTAR (AGREGAR)
         public void GuardarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
         {
             try
             {
-                // 1. Agregamos el campo 'proveedor' a la consulta SQL 
                 string query = "INSERT INTO refacciones (codigoRefaccion, nombre, marca, precioUnitario, stockActual, stockMinimo, proveedor) " +
                                "VALUES (@cod, @nom, @mar, @pre, @sta, @stm, @pro)";
 
                 MySqlCommand comando = new MySqlCommand(query, conexionDB.establecerConexion());
 
-               // 2. Pasamos los parámetros
                 comando.Parameters.AddWithValue("@cod", codigo);
                 comando.Parameters.AddWithValue("@mar", marca);
                 comando.Parameters.AddWithValue("@nom", nombre);
-                comando.Parameters.AddWithValue("@pro", proveedor); 
+                comando.Parameters.AddWithValue("@pro", proveedor);
                 comando.Parameters.AddWithValue("@pre", precio);
                 comando.Parameters.AddWithValue("@sta", stockAct);
                 comando.Parameters.AddWithValue("@stm", stockMin);
 
                 comando.Connection.Open();
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Refacción y Proveedor guardados en Azure exitosamente."); 
-        comando.Connection.Close();
+                MessageBox.Show("Refacción guardada exitosamente.");
+                comando.Connection.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al conectar con la base de datos: " + ex.Message);
+                MessageBox.Show("Error al guardar: " + ex.Message);
             }
         }
-        // Método para ELIMINAR una refacción de la base de datos 
+
+        // 2. Método para ACTUALIZAR (MODIFICAR)
+        public void ModificarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
+        {
+            try
+            {
+                string query = "UPDATE refacciones SET nombre = @nom, marca = @mar, precioUnitario = @pre, stockActual = @sta, stockMinimo = @stm, proveedor = @pro WHERE codigoRefaccion = @cod";
+
+                MySqlCommand comando = new MySqlCommand(query, conexionDB.establecerConexion());
+
+                comando.Parameters.AddWithValue("@cod", codigo);
+                comando.Parameters.AddWithValue("@mar", marca);
+                comando.Parameters.AddWithValue("@nom", nombre);
+                comando.Parameters.AddWithValue("@pro", proveedor);
+                comando.Parameters.AddWithValue("@pre", precio);
+                comando.Parameters.AddWithValue("@sta", stockAct);
+                comando.Parameters.AddWithValue("@stm", stockMin);
+
+                comando.Connection.Open();
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Refacción actualizada correctamente.");
+                comando.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar: " + ex.Message);
+            }
+        }
+
+        // 3. Método para ELIMINAR 
         public void EliminarRefaccion(string codigo)
         {
             try
             {
-                Conexion conexionDB = new Conexion();
-                // Sentencia SQL para borrar el registro específico 
                 string query = "DELETE FROM refacciones WHERE codigoRefaccion = @cod";
 
                 MySqlCommand comando = new MySqlCommand(query, conexionDB.establecerConexion());
@@ -56,7 +79,7 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
 
                 comando.Connection.Open();
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Registro eliminado correctamente de la nube.");
+                MessageBox.Show("Registro eliminado correctamente.");
                 comando.Connection.Close();
             }
             catch (Exception ex)
@@ -64,26 +87,21 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
                 MessageBox.Show("Error al intentar eliminar: " + ex.Message);
             }
         }
-        // Método para OBTENER los datos de la nube y llenar un DataTable
+
+        // 4. Método para LEER (VER / LLENAR GRID)
         public void MostrarRefacciones(DataGridView tabla)
         {
-            Conexion objetoConexion = new Conexion();
             try
             {
-                // Consulta SQL para traer todo de la tabla refacciones
                 string query = "SELECT * FROM refacciones";
-
-                // El Adapter sirve para llenar la tabla con los datos de MySQL
-                MySqlDataAdapter adapter = new MySqlDataAdapter(query, objetoConexion.establecerConexion());
-                System.Data.DataTable dt = new System.Data.DataTable();
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conexionDB.establecerConexion());
+                DataTable dt = new DataTable();
                 adapter.Fill(dt);
-
-                // Asignamos los datos a la cuadrícula del diseño
                 tabla.DataSource = dt;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudieron mostrar los datos de Azure: " + ex.Message);
+                MessageBox.Show("No se pudieron mostrar los datos: " + ex.Message);
             }
         }
     }

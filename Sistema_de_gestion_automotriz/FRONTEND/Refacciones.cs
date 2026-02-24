@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using Sistema_de_gestion_automotriz.BACKEND.DAOs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +17,65 @@ namespace Sistema_de_gestion_automotriz
         public Refacciones()
         {
             InitializeComponent();
+
             grbStock.BackColor = ColorTranslator.FromHtml("#81C784");
+        }
+
+        private bool esModificacion = false;
+        private bool esSoloLectura = false;
+
+        // Configura la UI según el modo (Ver, Agregar, Modificar)
+        public void LlenarCampos(string codigo, string nombre, string marca, string precio, string stockA, string stockM, string prov, bool esEditable, bool esNuevo)
+        {
+            txtCodigoRefaccion.Text = codigo;
+            txtNombreRefaccion.Text = nombre;
+            txtMarca.Text = marca;
+            txtPrecioUnitario.Text = precio;
+            txtAtockActual.Text = stockA;
+            txtStockMinimo.Text = stockM;
+            txtProveedor.Text = prov; // <--- Asumiendo que cambiaste el ComboBox por un TextBox
+
+            // Guardamos el estado en las variables globales
+            esSoloLectura = !esEditable;
+            esModificacion = !esNuevo;
+
+            // BLOQUEOS REALES
+            txtCodigoRefaccion.ReadOnly = !esEditable;
+            txtNombreRefaccion.ReadOnly = !esEditable;
+            txtMarca.ReadOnly = !esEditable;
+            txtPrecioUnitario.ReadOnly = !esEditable;
+            txtAtockActual.ReadOnly = !esEditable;
+            txtStockMinimo.ReadOnly = !esEditable;
+            txtProveedor.ReadOnly = !esEditable;
+
+            // VISIBILIDAD DE BOTONES
+            btnGuardar.Visible = esEditable;
+            btnCancelar.Visible = esEditable; // Ocultamos cancelar en modo "Ver"
+
+            // GESTIÓN DE LA ETIQUETA "MODO"
+            if (!esEditable)
+            {
+                lblModo.Text = "MODO: Sólo Lectura";
+                lblModo.ForeColor = Color.Gray;
+            }
+            else if (esNuevo)
+            {
+                lblModo.Text = "MODO: Agregar Refacción";
+                lblModo.ForeColor = ColorTranslator.FromHtml("#006400"); // Verde oscuro
+            }
+            else
+            {
+                lblModo.Text = "MODO: Edición";
+                lblModo.ForeColor = Color.Orange;
+                // Si es edición, bloqueamos forzosamente la Llave Primaria
+                txtCodigoRefaccion.ReadOnly = true;
+            }
+
+            // Quitar el color gris de los placeholders si los campos tienen datos
+            foreach (Control c in this.Controls)
+            {
+                if (c is TextBox && c.Text != "") { c.ForeColor = Color.Black; }
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -65,9 +125,14 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            Catalogo_Refacciones f2 = new Catalogo_Refacciones();
-            f2.Show();
+            // Recuperamos el catálogo oculto para actualizar la tabla y mostrarlo
+            Catalogo_Refacciones catalogo = (Catalogo_Refacciones)Application.OpenForms["Catalogo_Refacciones"];
+            if (catalogo != null)
+            {
+                catalogo.RefrescarTabla();
+                catalogo.Show();
+            }
+            this.Close(); // Liberamos memoria de esta pantalla
         }
 
         private void txtNombreRefaccion_Leave(object sender, EventArgs e)
@@ -162,82 +227,89 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            txtCodigoRefaccion.Clear();
-            txtMarca.Clear();
-            txtNombreRefaccion.Clear();
-            txtPrecioUnitario.Clear();
-            txtStockMinimo.Clear();
-            txtAtockActual.Clear();
+            // Si el usuario estaba editando o agregando, le lanzamos la advertencia
+            if (!esSoloLectura)
+            {
+                DialogResult respuesta = MessageBox.Show(
+                    "¿Estás seguro de que deseas cancelar?\nLos cambios realizados no se guardarán.",
+                    "Confirmar Cancelación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
 
-            // Para el ComboBox del proveedor
-            cboProveedor.SelectedIndex = -1;
+                if (respuesta == DialogResult.No)
+                {
+                    return; // Aborta la cancelación y se queda en la pantalla
+                }
+            }
+
+            // Si respondió "Sí" (o si estaba en modo lectura), cerramos la ventana
+            this.btnCerrar_Click(null, null);
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (cboProveedor.SelectedIndex == -1)
-            {
-                MessageBox.Show("Por favor, selecciona un proveedor de la lista.");
-                return;
-            }
+            // Limpieza del formato de moneda
+            string precioLimpio = txtPrecioUnitario.Text.Replace("$", "").Trim();
 
             try
             {
-                // Creamos el objeto del DAO para procesar los datos 
                 BACKEND.DAOs.RefaccionesDAO dao = new BACKEND.DAOs.RefaccionesDAO();
 
-                // Le mandamos todos los datos, incluyendo el .Text del ComboBox
-                dao.GuardarRefaccion(
-                    txtCodigoRefaccion.Text,
-                    txtMarca.Text,
-                    txtNombreRefaccion.Text,
-                    cboProveedor.Text, // <--- Aquí es donde metes el proveedor
-                    Convert.ToDouble(txtPrecioUnitario.Text),
-                    Convert.ToInt32(txtAtockActual.Text), // Usando tu variable 'Atock'
-                    Convert.ToInt32(txtStockMinimo.Text)
-                );
+                if (esModificacion)
+                {
+                    dao.ModificarRefaccion(txtCodigoRefaccion.Text, txtMarca.Text, txtNombreRefaccion.Text, txtProveedor.Text, Convert.ToDouble(precioLimpio), Convert.ToInt32(txtAtockActual.Text), Convert.ToInt32(txtStockMinimo.Text));
+                }
+                else
+                {
+                    dao.GuardarRefaccion(txtCodigoRefaccion.Text, txtMarca.Text, txtNombreRefaccion.Text, txtProveedor.Text, Convert.ToDouble(precioLimpio), Convert.ToInt32(txtAtockActual.Text), Convert.ToInt32(txtStockMinimo.Text));
+                }
 
-                MessageBox.Show("Datos guardados. Volviendo al catálogo...");
+                // Si no hubo errores, forzamos el cierre directo saltándonos la advertencia
+                esSoloLectura = true;
                 this.btnCerrar_Click(null, null);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: Verifica que los campos numéricos sean correctos.");
+                // Manejo inteligente del error de Llave Primaria Duplicada
+                if (ex.Message.Contains("Duplicate entry"))
+                {
+                    MessageBox.Show("El Código de Refacción '" + txtCodigoRefaccion.Text + "' ya existe en el sistema.\nPor favor, utiliza un código distinto.", "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("Error al procesar los datos. Verifica que los campos numéricos sean correctos.\nDetalle: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
-        // Método para recibir datos y decidir si se puede editar o no 
-        public void LlenarCampos(string codigo, string nombre, string marca, string precio, string stockA, string stockM, string prov, bool esEditable)
+        // Método para MODIFICAR una refacción existente
+        public void ModificarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
         {
-            // Llenamos los textos
-            txtCodigoRefaccion.Text = codigo;
-            txtNombreRefaccion.Text = nombre;
-            txtMarca.Text = marca;
-            txtPrecioUnitario.Text = precio;
-            txtAtockActual.Text = stockA;
-            txtStockMinimo.Text = stockM;
-            cboProveedor.Text = prov;
-
-            // Ajustamos colores para que no parezcan placeholders
-            foreach (Control c in this.Controls)
+            try
             {
-                if (c is TextBox) { c.ForeColor = Color.Black; }
+                Conexion conexionDB = new Conexion();
+                string query = "UPDATE refacciones SET nombre = @nom, marca = @mar, precioUnitario = @pre, stockActual = @sta, stockMinimo = @stm, proveedor = @pro WHERE codigoRefaccion = @cod";
+
+                MySqlCommand comando = new MySqlCommand(query, conexionDB.establecerConexion());
+
+                comando.Parameters.AddWithValue("@cod", codigo);
+                comando.Parameters.AddWithValue("@mar", marca);
+                comando.Parameters.AddWithValue("@nom", nombre);
+                comando.Parameters.AddWithValue("@pro", proveedor);
+                comando.Parameters.AddWithValue("@pre", precio);
+                comando.Parameters.AddWithValue("@sta", stockAct);
+                comando.Parameters.AddWithValue("@stm", stockMin);
+
+                comando.Connection.Open();
+                comando.ExecuteNonQuery();
+                MessageBox.Show("Refacción actualizada correctamente en Azure.");
+                comando.Connection.Close();
             }
-
-            // BLOQUEAR O DESBLOQUEAR 
-                        // Usamos ReadOnly para que el usuario pueda copiar el texto pero no borrarlo
-            txtCodigoRefaccion.ReadOnly = !esEditable;
-            txtNombreRefaccion.ReadOnly = !esEditable;
-            txtMarca.ReadOnly = !esEditable;
-            txtPrecioUnitario.ReadOnly = !esEditable;
-            txtAtockActual.ReadOnly = !esEditable;
-            txtStockMinimo.ReadOnly = !esEditable;
-
-            // El ComboBox se bloquea con Enabled
-            cboProveedor.Enabled = esEditable;
-
-            // Si es modo "Ver", ocultamos el botón de Guardar para que no intenten picarle
-            btnGuardar.Visible = esEditable;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar en la base de datos: " + ex.Message);
+            }
         }
+
     }
 }

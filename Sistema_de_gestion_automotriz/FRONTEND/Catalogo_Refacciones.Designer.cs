@@ -138,6 +138,7 @@
             dgvRefacciones.RowHeadersWidth = 51;
             dgvRefacciones.Size = new Size(897, 426);
             dgvRefacciones.TabIndex = 8;
+            dgvRefacciones.CellDoubleClick += dgvRefacciones_CellDoubleClick;
             // 
             // panel2
             // 
