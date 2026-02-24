@@ -33,13 +33,13 @@ namespace Sistema_de_gestion_automotriz
             txtPrecioUnitario.Text = precio;
             txtAtockActual.Text = stockA;
             txtStockMinimo.Text = stockM;
-            txtProveedor.Text = prov; // <--- Asumiendo que cambiaste el ComboBox por un TextBox
+            txtProveedor.Text = prov; 
 
             // Guardamos el estado en las variables globales
             esSoloLectura = !esEditable;
             esModificacion = !esNuevo;
 
-            // BLOQUEOS REALES
+            // BLOQUEOS 
             txtCodigoRefaccion.Enabled = esEditable;
             txtNombreRefaccion.Enabled = esEditable;
             txtMarca.Enabled = esEditable;
@@ -50,7 +50,7 @@ namespace Sistema_de_gestion_automotriz
 
             // VISIBILIDAD DE BOTONES
             btnGuardar.Visible = esEditable;
-            btnCancelar.Visible = esEditable; // Ocultamos cancelar en modo "Ver"
+            btnCancelar.Visible = esEditable;
 
             // GESTIÓN DE LA ETIQUETA "MODO"
             if (!esEditable)
@@ -61,7 +61,7 @@ namespace Sistema_de_gestion_automotriz
             else if (esNuevo)
             {
                 lblModo.Text = "MODO: Agregar Refacción";
-                lblModo.ForeColor = ColorTranslator.FromHtml("#006400"); // Verde oscuro
+                lblModo.ForeColor = ColorTranslator.FromHtml("#006400");
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Sistema_de_gestion_automotriz
                         txt.Text != "Ej.Filtro de Aceite de Alto Rendimiento" &&
                         txt.Text != "$ 0.00" &&
                         txt.Text != "Ej. Nombre del Proveedor o Empresa" &&
-                        txt.Text != "0") // Agregamos el 0 por si acaso
+                        txt.Text != "0") 
                     {
                         txt.ForeColor = Color.Black;
                     }
@@ -153,7 +153,7 @@ namespace Sistema_de_gestion_automotriz
                 catalogo.RefrescarTabla();
                 catalogo.Show();
             }
-            this.Close(); // Liberamos memoria de esta pantalla
+            this.Close(); 
         }
 
         private void txtNombreRefaccion_Leave(object sender, EventArgs e)
@@ -196,26 +196,26 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtCodigoRefaccion_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // 1. Opcional: Convertir a mayúsculas automáticamente para que se vea mejor
+            // Convertir a mayúsculas automáticamente
             e.KeyChar = char.ToUpper(e.KeyChar);
 
-            // 2. Permitir Letras o Números
+            // Permitir Letras o Números
             if (char.IsLetterOrDigit(e.KeyChar))
             {
                 e.Handled = false;
             }
-            // 3. Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
+            // Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
             else if (e.KeyChar == '-')
             {
                 TextBox txt = (TextBox)sender;
 
                 if (txt.Text.Contains("-"))
                 {
-                    e.Handled = true; // Ya existe uno, así que bloqueamos este segundo intento
+                    e.Handled = true; 
                 }
                 else
                 {
-                    e.Handled = false; // No hay ninguno, adelante
+                    e.Handled = false; 
                 }
             }
             // 4. Permitir teclas de control (como borrar)
@@ -277,7 +277,7 @@ namespace Sistema_de_gestion_automotriz
             }
             else
             {
-                e.Handled = true; // Bloquea cualquier otra cosa (letras, comas, etc.)
+                e.Handled = true;
             }
         }
 
@@ -294,11 +294,11 @@ namespace Sistema_de_gestion_automotriz
 
                 if (respuesta == DialogResult.No)
                 {
-                    return; // Aborta la cancelación y se queda en la pantalla
+                    return; // Aborta 
                 }
             }
 
-            // Si respondió "Sí" (o si estaba en modo lectura), cerramos la ventana
+            // Si respondió "Sí"
             this.btnCerrar_Click(null, null);
         }
 
@@ -326,7 +326,7 @@ namespace Sistema_de_gestion_automotriz
             }
             catch (Exception ex)
             {
-                // Manejo inteligente del error de Llave Primaria Duplicada
+                // Manejo Llave Primaria Duplicada
                 if (ex.Message.Contains("Duplicate entry"))
                 {
                     MessageBox.Show("El Código de Refacción '" + txtCodigoRefaccion.Text + "' ya existe en el sistema.\nPor favor, utiliza un código distinto.", "Código Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -338,7 +338,7 @@ namespace Sistema_de_gestion_automotriz
             }
         }
 
-        // Método para MODIFICAR una refacción existente
+        // Método para MODIFICAR
         public void ModificarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
         {
             try

@@ -203,7 +203,7 @@
             txtBuscar_Clave_Nombre.Name = "txtBuscar_Clave_Nombre";
             txtBuscar_Clave_Nombre.Size = new Size(439, 30);
             txtBuscar_Clave_Nombre.TabIndex = 15;
-            txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave del Servicio";
+            txtBuscar_Clave_Nombre.Text = "🔍Buscar por Nombre del Servicio";
             txtBuscar_Clave_Nombre.TextChanged += txtBuscar_Clave_Nombre_TextChanged;
             txtBuscar_Clave_Nombre.Enter += txtBuscar_Clave_Nombre_Enter;
             txtBuscar_Clave_Nombre.KeyPress += txtBuscar_Clave_Nombre_KeyPress;

@@ -7,10 +7,18 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
 {
     internal class RefaccionesDAO
     {
-        // Instancia de nuestra clase de conexión
         Conexion conexionDB = new Conexion();
 
-        // 1. Método para INSERTAR (AGREGAR)
+        /// <summary>
+        /// Inserta un nuevo registro en la tabla de refacciones.
+        /// </summary>
+        /// <param name="codigo">Código único de la refacción.</param>
+        /// <param name="marca">Marca de la pieza.</param>
+        /// <param name="nombre">Nombre descriptivo de la refacción.</param>
+        /// <param name="proveedor">Nombre del proveedor.</param>
+        /// <param name="precio">Precio unitario.</param>
+        /// <param name="stockAct">Cantidad actual disponible en inventario.</param>
+        /// <param name="stockMin">Cantidad mínima requerida en inventario.</param>
         public void GuardarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
         {
             try
@@ -39,7 +47,16 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
             }
         }
 
-        // 2. Método para ACTUALIZAR (MODIFICAR)
+        /// <summary>
+        /// Actualiza los datos de un registro existente en la tabla de refacciones.
+        /// </summary>
+        /// <param name="codigo">Código único de la refacción (no modificable).</param>
+        /// <param name="marca">Nueva marca de la pieza.</param>
+        /// <param name="nombre">Nuevo nombre descriptivo.</param>
+        /// <param name="proveedor">Nuevo proveedor.</param>
+        /// <param name="precio">Nuevo precio unitario.</param>
+        /// <param name="stockAct">Nueva cantidad en inventario.</param>
+        /// <param name="stockMin">Nuevo stock mínimo permitido.</param>
         public void ModificarRefaccion(string codigo, string marca, string nombre, string proveedor, double precio, int stockAct, int stockMin)
         {
             try
@@ -67,7 +84,10 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
             }
         }
 
-        // 3. Método para ELIMINAR 
+        /// <summary>
+        /// Elimina de forma permanente un registro de la tabla de refacciones.
+        /// </summary>
+        /// <param name="codigo">Código de la refacción a eliminar.</param>
         public void EliminarRefaccion(string codigo)
         {
             try
@@ -88,7 +108,10 @@ namespace Sistema_de_gestion_automotriz.BACKEND.DAOs
             }
         }
 
-        // 4. Método para LEER (VER / LLENAR GRID)
+        /// <summary>
+        /// Recupera todos los registros de la tabla de refacciones y los asigna a un componente visual.
+        /// </summary>
+        /// <param name="tabla">El DataGridView donde se volcarán los datos recuperados.</param>
         public void MostrarRefacciones(DataGridView tabla)
         {
             try

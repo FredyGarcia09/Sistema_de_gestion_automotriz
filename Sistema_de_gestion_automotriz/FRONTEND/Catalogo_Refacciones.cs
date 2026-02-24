@@ -42,14 +42,12 @@ namespace Sistema_de_gestion_automotriz
             dgvRefacciones.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#E8F5E9");
         }
 
-        // Esta es la función que el botón de guardar intentaba llamar
         public void RefrescarTabla()
         {
-            // 1. Creamos el objeto del DAO que está en tu carpeta BACKEND
+            // DAO de conexiones
             BACKEND.DAOs.RefaccionesDAO objetoDAO = new BACKEND.DAOs.RefaccionesDAO();
 
-            // 2. Llamamos al método que creamos arriba pasándole el nombre de tu DataGridView
-            // IMPORTANTE: Asegúrate de que tu grid se llame 'dgvRefacciones' en las propiedades
+            // LLenar Grid
             objetoDAO.MostrarRefacciones(dgvRefacciones);
         }
 
@@ -61,18 +59,13 @@ namespace Sistema_de_gestion_automotriz
             ventana.Show();
             this.Hide();
         }
-        private void AbrirNuevoFormulario()
-        {
-            // Cambia de form
-            Application.Run(new Refacciones());
-        }
 
         private void txtBuscar_Clave_Nombre_TextChanged(object sender, EventArgs e)
         {
             // Condicion para buscar
             if (txtBuscar_Clave_Nombre.Text == "🔍Buscar por Clave o Nombre." || string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text))
             {
-                // Si la tabla ya tiene datos, le quitamos cualquier filtro para que muestre todo
+                // Si la tabla ya tiene datos, le quitamos los filtros
                 if (dgvRefacciones.DataSource is DataTable dtVacio)
                 {
                     dtVacio.DefaultView.RowFilter = "";
@@ -101,7 +94,7 @@ namespace Sistema_de_gestion_automotriz
         {
             if (string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text))
             {
-                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre."; // Restaura la sugerencia
+                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave o Nombre.";
                 txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
             }
         }
@@ -125,9 +118,8 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
-            // Buscamos el menú principal que estaba oculto y lo volvemos a mostrar
+            // Mostrar menú principal
             Application.OpenForms["MenuPrincipal"].Show();
-            // Cerramos esta ventana de refacciones
             this.Close();
         }
 
@@ -143,7 +135,7 @@ namespace Sistema_de_gestion_automotriz
             else { MessageBox.Show("Selecciona una refacción."); }
         }
 
-        // Método auxiliar para no repetir código de extracción
+
         private void EnviarDatos(Refacciones ventana, bool editable, bool nuevo)
         {
             string cod = dgvRefacciones.CurrentRow.Cells[0].Value.ToString();
@@ -174,14 +166,13 @@ namespace Sistema_de_gestion_automotriz
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // 1. Verificamos que el usuario seleccionó una fila en el grid [cite: 20]
+            // Verificamos que se seleccionó una fila en el grid
             if (dgvRefacciones.SelectedRows.Count > 0)
             {
-                // Extraemos el código de la refacción (Columna 0 según tu script SQL)
                 string codigo = dgvRefacciones.CurrentRow.Cells[0].Value.ToString();
                 string nombre = dgvRefacciones.CurrentRow.Cells[1].Value.ToString();
 
-                // 2. Mostramos la ventana de confirmación 
+                // Mostramos la ventana de confirmación 
                 DialogResult resultado = MessageBox.Show(
                     "¿Estás seguro que deseas eliminar la refacción: " + nombre + "?",
                     "Confirmar Eliminación",
@@ -189,13 +180,13 @@ namespace Sistema_de_gestion_automotriz
                     MessageBoxIcon.Warning
                 );
 
-                // 3. Si el usuario le pica a "SÍ", procedemos a borrar
+                // Procedemos a borrar
                 if (resultado == DialogResult.Yes)
                 {
                     BACKEND.DAOs.RefaccionesDAO dao = new BACKEND.DAOs.RefaccionesDAO();
                     dao.EliminarRefaccion(codigo);
 
-                    // 4. Actualizamos la tabla automáticamente para ver el cambio [cite: 5, 20]
+                    // Actualizamos la tabla automáticamente para ver el cambio
                     RefrescarTabla();
                 }
             }
@@ -233,20 +224,20 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtBuscar_Clave_Nombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // 1. Convertir automáticamente a MAYÚSCULAS al teclear
+            // Convertir automáticamente a MAYÚSCULAS al teclear
             e.KeyChar = char.ToUpper(e.KeyChar);
 
-            // 2. Permitir letras o números
+            // Permitir letras o números
             if (char.IsLetterOrDigit(e.KeyChar))
             {
                 e.Handled = false; 
             }
-            // 3. Permitir teclas de control (Borrar, flechas, etc.)
+            // Permitir teclas de control (Borrar, flechas, etc.)
             else if (char.IsControl(e.KeyChar))
             {
                 e.Handled = false; 
             }
-            // 4. Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
+            // Permitir el guion '-' solo una vez
             else if (e.KeyChar == '-')
             {
                 TextBox txt = (TextBox)sender; 
@@ -260,7 +251,7 @@ namespace Sistema_de_gestion_automotriz
                     e.Handled = false; 
                 }
             }
-            // 5. Bloquear todo lo demás (espacios, puntos, comas, etc.)
+            // Bloquear todo lo demás (espacios, puntos, comas, etc.)
             else
             {
                 e.Handled = true; 

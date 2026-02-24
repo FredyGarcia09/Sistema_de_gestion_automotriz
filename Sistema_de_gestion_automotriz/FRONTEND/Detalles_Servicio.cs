@@ -32,7 +32,7 @@ namespace Sistema_de_gestion_automotriz
             esSoloLectura = !esEditable;
             esModificacion = !esNuevo;
 
-            // BLOQUEOS REALES 
+            // BLOQUEOS 
             txtClaveServicio.Enabled = esEditable;
             txtNombreServicio.Enabled = esEditable;
             txtDescripcion.Enabled = esEditable;
@@ -60,7 +60,7 @@ namespace Sistema_de_gestion_automotriz
             }
 
             
-            // Buscamos todos los TextBox del formulario, sin importar si están en un GroupBox
+            // Buscamos todos los TextBox del formulario
             var todosLosTextBox = this.Controls.Cast<Control>()
                                   .SelectMany(c => GetAllControls(c))
                                   .OfType<TextBox>();
@@ -269,7 +269,7 @@ namespace Sistema_de_gestion_automotriz
                 }
             }
         }
-        // Esta función es la que ayuda a encontrar los TextBox que están escondidos dentro de GroupBoxes
+        // Encontrar los TextBox que están escondidos dentro de GroupBoxes
         public IEnumerable<Control> GetAllControls(Control container)
         {
             var controls = container.Controls.Cast<Control>();

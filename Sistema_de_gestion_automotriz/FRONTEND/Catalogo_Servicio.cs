@@ -56,10 +56,6 @@ namespace Sistema_de_gestion_automotriz
             ventana.Show();
             this.Hide();
         }
-        private void AbrirNuevoFormulario()
-        {
-            Application.Run(new Detalles_Servicio());
-        }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
@@ -86,20 +82,20 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtBuscar_Clave_Nombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // 1. Convertir automáticamente a MAYÚSCULAS al teclear
+            // Convertir a MAYÚSCULAS al teclear
             e.KeyChar = char.ToUpper(e.KeyChar);
 
-            // 2. Permitir letras o números
+            // Permitir letras o números
             if (char.IsLetterOrDigit(e.KeyChar))
             {
                 e.Handled = false; 
             }
-            // 3. Permitir teclas de control (Borrar, flechas, etc.)
+            // Permitir teclas de control (Borrar, flechas, etc.)
             else if (char.IsControl(e.KeyChar))
             {
                 e.Handled = false; 
             }
-            // 4. Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
+            // Permitir el guion '-' SOLO SI NO EXISTE YA UNO
             else if (e.KeyChar == '-')
             {
                 TextBox txt = (TextBox)sender; 
@@ -113,7 +109,7 @@ namespace Sistema_de_gestion_automotriz
                     e.Handled = false; 
                 }
             }
-            // 5. Bloquear todo lo demás (espacios, puntos, comas, etc.)
+            // Bloquear todo lo demás (espacios, puntos, comas, etc.)
             else
             {
                 e.Handled = true; 
@@ -122,7 +118,7 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtBuscar_Clave_Nombre_TextChanged(object sender, EventArgs e)
         {
-            if (txtBuscar_Clave_Nombre.Text == "🔍Buscar por Clave del Servicio" || string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text))
+            if (txtBuscar_Clave_Nombre.Text == "🔍Buscar por Nombre del Servicio" || string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text))
             {
                 if (dgvServicios.DataSource is DataTable dtVacio) dtVacio.DefaultView.RowFilter = "";
                 return;
@@ -138,7 +134,7 @@ namespace Sistema_de_gestion_automotriz
         private void txtBuscar_Clave_Nombre_Leave(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtBuscar_Clave_Nombre.Text)) { 
-                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave del Servicio"; 
+                txtBuscar_Clave_Nombre.Text = "🔍Buscar por Nombre del Servicio"; 
                 txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro; 
             }
         }
@@ -165,7 +161,7 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnRecargar_Click(object sender, EventArgs e)
         {
-            txtBuscar_Clave_Nombre.Text = "🔍Buscar por Clave del Servicio";
+            txtBuscar_Clave_Nombre.Text = "🔍Buscar por Nombre del Servicio";
             txtBuscar_Clave_Nombre.ForeColor = Color.Gainsboro;
             if (dgvServicios.DataSource is DataTable dt) dt.DefaultView.RowFilter = "";
             RefrescarTabla();
