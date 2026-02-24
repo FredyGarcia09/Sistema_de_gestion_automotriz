@@ -51,6 +51,7 @@
             btnCancelar = new Button();
             btnGuardar = new Button();
             groupBox2 = new GroupBox();
+            lblModo = new Label();
             panel2.SuspendLayout();
             groupBox1.SuspendLayout();
             panel1.SuspendLayout();
@@ -122,7 +123,7 @@
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
             groupBox1.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            groupBox1.Location = new Point(27, 85);
+            groupBox1.Location = new Point(13, 115);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(864, 239);
             groupBox1.TabIndex = 14;
@@ -285,7 +286,7 @@
             panel1.Controls.Add(btnCancelar);
             panel1.Controls.Add(btnGuardar);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 545);
+            panel1.Location = new Point(0, 584);
             panel1.Name = "panel1";
             panel1.Size = new Size(921, 86);
             panel1.TabIndex = 18;
@@ -324,12 +325,14 @@
             // btnGuardar
             // 
             btnGuardar.BackColor = Color.DarkGreen;
+            btnGuardar.ForeColor = SystemColors.ButtonHighlight;
             btnGuardar.Location = new Point(738, 19);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(115, 45);
             btnGuardar.TabIndex = 12;
             btnGuardar.Text = "📩Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // groupBox2
             // 
@@ -340,18 +343,30 @@
             groupBox2.Controls.Add(label9);
             groupBox2.Controls.Add(label8);
             groupBox2.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            groupBox2.Location = new Point(26, 330);
+            groupBox2.Location = new Point(12, 378);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(865, 185);
             groupBox2.TabIndex = 19;
             groupBox2.TabStop = false;
             groupBox2.Text = "💵 DETALLES OPERATIVOS";
             // 
+            // lblModo
+            // 
+            lblModo.AutoSize = true;
+            lblModo.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold);
+            lblModo.ForeColor = Color.DarkGreen;
+            lblModo.Location = new Point(13, 72);
+            lblModo.Name = "lblModo";
+            lblModo.Size = new Size(68, 23);
+            lblModo.TabIndex = 6;
+            lblModo.Text = "MODO:";
+            // 
             // Detalles_Servicio
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(921, 631);
+            ClientSize = new Size(921, 670);
+            Controls.Add(lblModo);
             Controls.Add(groupBox2);
             Controls.Add(panel1);
             Controls.Add(groupBox1);
@@ -369,6 +384,7 @@
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -396,5 +412,6 @@
         private Button btnCancelar;
         private Button btnGuardar;
         private GroupBox groupBox2;
+        private Label lblModo;
     }
 }

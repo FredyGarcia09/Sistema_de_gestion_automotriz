@@ -29,15 +29,9 @@ namespace Sistema_de_gestion_automotriz
 
         private void btnServicios_Click(object sender, EventArgs e)
         {
-            // 1. Creamos un hilo para abrir el nuevo formulario
-            System.Threading.Thread hilo = new System.Threading.Thread(new System.Threading.ThreadStart(AbrirNuevoFormularioServicio));
-
-            // 2. Iniciamos el hilo
-            hilo.SetApartmentState(System.Threading.ApartmentState.STA);
-            hilo.Start();
-
-            // 3. Cerramos el formulario actual definitivamente
-            this.Close();
+            Catalogo_Servicio ventanaServicios = new Catalogo_Servicio();
+            ventanaServicios.Show();
+            this.Hide();
         }
         private void AbrirNuevoFormularioServicio()
         {

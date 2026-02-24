@@ -34,7 +34,7 @@
             label4 = new Label();
             btnMinimizar = new Button();
             btnVer = new Button();
-            dataGridView1 = new DataGridView();
+            dgvServicios = new DataGridView();
             btnEliminar = new Button();
             btnModificar = new Button();
             btnAgregar = new Button();
@@ -46,7 +46,7 @@
             label5 = new Label();
             label6 = new Label();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvServicios).BeginInit();
             SuspendLayout();
             // 
             // panel2
@@ -133,14 +133,15 @@
             btnVer.UseVisualStyleBackColor = true;
             btnVer.Click += btnVer_Click;
             // 
-            // dataGridView1
+            // dgvServicios
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(14, 263);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(897, 426);
-            dataGridView1.TabIndex = 20;
+            dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvServicios.Location = new Point(14, 263);
+            dgvServicios.Name = "dgvServicios";
+            dgvServicios.RowHeadersWidth = 51;
+            dgvServicios.Size = new Size(897, 426);
+            dgvServicios.TabIndex = 20;
+            dgvServicios.CellDoubleClick += dgvServicios_CellDoubleClick;
             // 
             // btnEliminar
             // 
@@ -152,6 +153,7 @@
             btnEliminar.TabIndex = 19;
             btnEliminar.Text = "🗑️ Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
             // 
             // btnModificar
             // 
@@ -266,7 +268,7 @@
             Controls.Add(label5);
             Controls.Add(label6);
             Controls.Add(btnVer);
-            Controls.Add(dataGridView1);
+            Controls.Add(dgvServicios);
             Controls.Add(btnEliminar);
             Controls.Add(btnModificar);
             Controls.Add(btnAgregar);
@@ -279,9 +281,10 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "Catalogo_Servicio";
             Text = "Catalogo_Servicio";
+            Load += Catalogo_Servicio_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvServicios).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -291,7 +294,7 @@
         private Panel panel2;
         private Label label4;
         private Button btnVer;
-        private DataGridView dataGridView1;
+        private DataGridView dgvServicios;
         private Button btnEliminar;
         private Button btnModificar;
         private Button btnAgregar;
