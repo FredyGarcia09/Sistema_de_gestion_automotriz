@@ -40,13 +40,13 @@ namespace Sistema_de_gestion_automotriz
             esModificacion = !esNuevo;
 
             // BLOQUEOS REALES
-            txtCodigoRefaccion.ReadOnly = !esEditable;
-            txtNombreRefaccion.ReadOnly = !esEditable;
-            txtMarca.ReadOnly = !esEditable;
-            txtPrecioUnitario.ReadOnly = !esEditable;
-            txtAtockActual.ReadOnly = !esEditable;
-            txtStockMinimo.ReadOnly = !esEditable;
-            txtProveedor.ReadOnly = !esEditable;
+            txtCodigoRefaccion.Enabled = esEditable;
+            txtNombreRefaccion.Enabled = esEditable;
+            txtMarca.Enabled = esEditable;
+            txtPrecioUnitario.Enabled = esEditable;
+            txtAtockActual.Enabled = esEditable;
+            txtStockMinimo.Enabled = esEditable;
+            txtProveedor.Enabled = esEditable;
 
             // VISIBILIDAD DE BOTONES
             btnGuardar.Visible = esEditable;
@@ -68,13 +68,26 @@ namespace Sistema_de_gestion_automotriz
                 lblModo.Text = "MODO: Edición";
                 lblModo.ForeColor = Color.Orange;
                 // Si es edición, bloqueamos forzosamente la Llave Primaria
-                txtCodigoRefaccion.ReadOnly = true;
+                txtCodigoRefaccion.Enabled = false;
             }
 
-            // Quitar el color gris de los placeholders si los campos tienen datos
-            foreach (Control c in this.Controls)
+            var todosLosControles = this.Controls.Cast<Control>().Concat(grbStock.Controls.Cast<Control>());
+
+            foreach (Control c in todosLosControles)
             {
-                if (c is TextBox && c.Text != "") { c.ForeColor = Color.Black; }
+                if (c is TextBox txt && !string.IsNullOrWhiteSpace(txt.Text))
+                {
+                    // Si el texto NO es un ejemplo, lo ponemos en negro
+                    if (txt.Text != "SKU-00000" &&
+                        txt.Text != "Ej. Bosch, Mazda.." &&
+                        txt.Text != "Ej.Filtro de Aceite de Alto Rendimiento" &&
+                        txt.Text != "$ 0.00" &&
+                        txt.Text != "Ej. Nombre del Proveedor o Empresa" &&
+                        txt.Text != "0") // Agregamos el 0 por si acaso
+                    {
+                        txt.ForeColor = Color.Black;
+                    }
+                }
             }
         }
 
@@ -90,8 +103,12 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtFuncionalidad_Enter(object sender, EventArgs e)
         {
-            txtCodigoRefaccion.Text = "";
-            txtCodigoRefaccion.ForeColor = Color.Black;
+            // Solo borramos si el color es gris (es un placeholder)
+            if (txtCodigoRefaccion.ForeColor == Color.Gainsboro)
+            {
+                txtCodigoRefaccion.Text = "";
+                txtCodigoRefaccion.ForeColor = Color.Black;
+            }
         }
 
         private void txtFuncionalidad_Leave(object sender, EventArgs e)
@@ -114,8 +131,12 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtMarca_Enter(object sender, EventArgs e)
         {
-            txtMarca.Text = "";
-            txtMarca.ForeColor = Color.Black;
+            // Solo borramos si el color es gris (es un placeholder)
+            if (txtMarca.ForeColor == Color.Gainsboro)
+            {
+                txtMarca.Text = "";
+                txtMarca.ForeColor = Color.Black;
+            }
         }
 
         private void btnMinimizar_Click(object sender, EventArgs e)
@@ -146,8 +167,12 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtNombreRefaccion_Enter(object sender, EventArgs e)
         {
-            txtNombreRefaccion.Text = "";
-            txtNombreRefaccion.ForeColor = Color.Black;
+            // Solo borramos si el color es gris (es un placeholder)
+            if (txtNombreRefaccion.ForeColor == Color.Gainsboro)
+            {
+                txtNombreRefaccion.Text = "";
+                txtNombreRefaccion.ForeColor = Color.Black;
+            }
         }
 
         private void txtPrecioUnitario_Leave(object sender, EventArgs e)
@@ -161,16 +186,47 @@ namespace Sistema_de_gestion_automotriz
 
         private void txtPrecioUnitario_Enter(object sender, EventArgs e)
         {
-            txtPrecioUnitario.Text = "";
-            txtPrecioUnitario.ForeColor = Color.Black;
+            // Solo borramos si el color es gris (es un placeholder)
+            if (txtPrecioUnitario.ForeColor == Color.Gainsboro)
+            {
+                txtPrecioUnitario.Text = "";
+                txtPrecioUnitario.ForeColor = Color.Black;
+            }
         }
 
         private void txtCodigoRefaccion_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permite solo letras, espacios y teclas de control (como borrar)
-            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            // 1. Opcional: Convertir a mayúsculas automáticamente para que se vea mejor
+            e.KeyChar = char.ToUpper(e.KeyChar);
+
+            // 2. Permitir Letras o Números
+            if (char.IsLetterOrDigit(e.KeyChar))
             {
-                e.Handled = true; // "Bloquea" la tecla
+                e.Handled = false;
+            }
+            // 3. Permitir el guion '-' PERO SOLO SI NO EXISTE YA UNO
+            else if (e.KeyChar == '-')
+            {
+                TextBox txt = (TextBox)sender;
+
+                if (txt.Text.Contains("-"))
+                {
+                    e.Handled = true; // Ya existe uno, así que bloqueamos este segundo intento
+                }
+                else
+                {
+                    e.Handled = false; // No hay ninguno, adelante
+                }
+            }
+            // 4. Permitir teclas de control (como borrar)
+            else if (char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            // 5. Bloquear todo lo demás (espacios, comas, puntos, etc.)
+            else
+            {
+                e.Handled = true;
             }
         }
 
@@ -311,5 +367,62 @@ namespace Sistema_de_gestion_automotriz
             }
         }
 
+        private void txtProveedor_Enter(object sender, EventArgs e)
+        {
+            if (txtProveedor.ForeColor == Color.Gainsboro)
+            {
+                txtProveedor.Text = "";
+                txtProveedor.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtProveedor_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtProveedor.Text))
+            {
+                txtProveedor.Text = "Ej. Nombre del Proveedor o Empresa";
+                txtProveedor.ForeColor = Color.Gainsboro;
+            }
+        }
+
+        private void txtAtockActual_Enter(object sender, EventArgs e)
+        {
+            // Solo borra si el color es gris (Gainsboro)
+            if (txtAtockActual.ForeColor == Color.Gainsboro)
+            {
+                txtAtockActual.Text = "";
+                txtAtockActual.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtAtockActual_Leave(object sender, EventArgs e)
+        {
+            // Si el usuario no escribió nada, regresamos el texto de ejemplo
+            if (string.IsNullOrWhiteSpace(txtAtockActual.Text))
+            {
+                txtAtockActual.Text = "0";
+                txtAtockActual.ForeColor = Color.Gainsboro;
+            }
+        }
+
+        private void txtStockMinimo_Enter(object sender, EventArgs e)
+        {
+            // Si el color es gris, significa que es el placeholder (ejemplo)
+            if (txtStockMinimo.ForeColor == Color.Gainsboro)
+            {
+                txtStockMinimo.Text = "";
+                txtStockMinimo.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtStockMinimo_Leave(object sender, EventArgs e)
+        {
+            // Si el usuario no escribió nada, regresamos el texto de ejemplo
+            if (string.IsNullOrWhiteSpace(txtStockMinimo.Text))
+            {
+                txtStockMinimo.Text = "0";
+                txtStockMinimo.ForeColor = Color.Gainsboro;
+            }
+        }
     }
 }

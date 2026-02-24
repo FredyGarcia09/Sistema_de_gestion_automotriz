@@ -190,7 +190,9 @@
             txtStockMinimo.Name = "txtStockMinimo";
             txtStockMinimo.Size = new Size(359, 34);
             txtStockMinimo.TabIndex = 14;
+            txtStockMinimo.Enter += txtStockMinimo_Enter;
             txtStockMinimo.KeyPress += txtStockMinimo_KeyPress;
+            txtStockMinimo.Leave += txtStockMinimo_Leave;
             // 
             // txtAtockActual
             // 
@@ -200,7 +202,9 @@
             txtAtockActual.Name = "txtAtockActual";
             txtAtockActual.Size = new Size(362, 34);
             txtAtockActual.TabIndex = 12;
+            txtAtockActual.Enter += txtAtockActual_Enter;
             txtAtockActual.KeyPress += txtAtockActual_KeyPress;
+            txtAtockActual.Leave += txtAtockActual_Leave;
             // 
             // label7
             // 
@@ -357,6 +361,8 @@
             txtProveedor.Size = new Size(362, 34);
             txtProveedor.TabIndex = 20;
             txtProveedor.Text = "Michelin";
+            txtProveedor.Enter += txtProveedor_Enter;
+            txtProveedor.Leave += txtProveedor_Leave;
             // 
             // Refacciones
             // 
